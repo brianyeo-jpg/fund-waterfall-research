@@ -303,6 +303,8 @@ elif page == "Exit Decision Calculator":
             else:
                 spread = alternative_irr - forward_irr
 
+                st.warning("⚠️ **Pipeline Bias Warning:** Underwriting teams systematically overestimate projected IRRs by 2-4%. Consider applying a conservative haircut to alternative deployment projections.")
+
                 # CORRECTED LOGIC: Early stage has HIGHER threshold (more friction)
                 if fund_stage == "Early (Years 1-4)":
                     st.markdown(f"**Early Stage:** Higher friction tolerance (5% threshold)")
