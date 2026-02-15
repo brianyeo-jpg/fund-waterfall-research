@@ -63,18 +63,18 @@
     <h2>Executive Summary</h2>
 
     <div class="executive-summary">
-        <p><strong>The First-Order Answer:</strong> Exit when <strong>Asset Forward IRR < Fund Pref Rate</strong> (typically 8%).</p>
+        <p><strong>The First-Order Answer:</strong> Exit when <strong>Asset Forward IRR < 8% × (Unreturned Capital / Current Equity)</strong>.</p>
 
         <p>This threshold is derived from first principles using documented waterfall mechanics. Despite extensive literature on waterfall structures and exit strategies, no existing source explicitly connects fund-level pref accrual to asset-level exit timing decisions.</p>
 
-        <p><strong>Why This Matters:</strong> The 8% pref rate creates a true economic cost—holding an asset earning 10% forward IRR while accruing 8% pref generates only 2% net value creation. Below 8%, you're actively destroying value.</p>
+        <p><strong>Why This Matters:</strong> The pref rate creates a true economic cost based on <em>unreturned capital</em>, not current market value. For a fresh asset where Unreturned Capital = Current Equity, this simplifies to the familiar 8% threshold. But for mature assets with distributions (Unreturned Capital < Equity), the threshold drops to 5-7%. For distressed assets (Unreturned Capital > Equity), the threshold rises to 10%+.</p>
 
-        <p><strong>The Real-World Complexity:</strong> While "Forward IRR > 8%" is the correct economic baseline, <strong>it's rarely the binding constraint</strong> in practice. The actual decision framework requires comparing asset forward IRR to <em>five different thresholds</em>:</p>
+        <p><strong>The Real-World Complexity:</strong> While the economic threshold is the correct baseline, <strong>it's rarely the binding constraint</strong> in practice. The actual decision framework requires comparing asset forward IRR to <em>five different thresholds</em>:</p>
 
         <ol>
-            <li><strong>Pref Rate (8%)</strong> — Economic baseline</li>
+            <li><strong>Economic Threshold: 8% × (Unreturned / Equity)</strong> — Baseline (varies 5-10% by asset)</li>
             <li><strong>Alternative Deployment IRR</strong> — Opportunity cost of capital (often 10-15%)</li>
-            <li><strong>Transaction-Adjusted Threshold</strong> — Pref rate + disposition costs (9-10%)</li>
+            <li><strong>Transaction-Adjusted Threshold</strong> — Economic threshold + disposition costs (9-10%)</li>
             <li><strong>Market Timing Threshold</strong> — Exit to avoid peak market reversals (10-15%)</li>
             <li><strong>IRR Preservation Threshold</strong> — Protect fund IRR for future fundraising (12-16%)</li>
         </ol>
@@ -89,17 +89,19 @@
     <h2>Conclusion</h2>
 
     <div class="conclusion">
-        <p><strong>The Answer: Asset Forward IRR > Fund Pref Rate (8%) is the correct economic baseline.</strong></p>
+        <p><strong>The Answer: Asset Forward IRR > 8% × (Unreturned Capital / Current Equity) is the correct economic baseline.</strong></p>
 
-        <p>This threshold is derived from first principles—pref accrues on unreturned capital at 8% annually, creating a real economic cost. Holding an asset earning below 8% forward IRR actively destroys value because the incremental profit ($Asset Equity × Forward IRR$) is less than the incremental pref burden ($Unreturned Capital × 8%$).</p>
+        <p>This threshold is derived from first principles—pref accrues on unreturned capital at 8% annually, creating a real economic cost. Holding an asset actively destroys value when the incremental profit (Asset Equity × Forward IRR) is less than the incremental pref burden (Unreturned Capital × 8%).</p>
 
-        <p><strong>But the 8% rule is rarely the binding constraint in practice.</strong> Real-world exit decisions require comparing asset forward IRR to <strong>five different thresholds</strong>, where the highest threshold wins:</p>
+        <p><strong>The threshold is asset-specific:</strong> For fresh assets where Unreturned Capital = Current Equity, this simplifies to the familiar "8% rule." But for mature assets with partial distributions (Unreturned Capital < Equity), the threshold drops to 5-7%. For underwater assets (Unreturned Capital > Equity), the threshold rises above 8%—because pref accrues on the contractual unreturned capital, not the depressed market value.</p>
+
+        <p><strong>But even this corrected threshold is rarely the binding constraint in practice.</strong> Real-world exit decisions require comparing asset forward IRR to <strong>five different thresholds</strong>, where the highest threshold wins:</p>
 
         <div class="formula">
             <strong>Exit if: Forward IRR < Max(</strong><br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<strong>1. Pref Rate (8%)</strong> — Economic baseline,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<strong>1. Economic Threshold: 8% × (Unreturned / Equity)</strong> — Baseline (varies 5-10% by asset),<br>
             &nbsp;&nbsp;&nbsp;&nbsp;<strong>2. Alternative Deployment IRR (10-15%)</strong> — Return from redeploying into new acquisitions,<br>
-            &nbsp;&nbsp;&nbsp;&nbsp;<strong>3. Pref Rate + Transaction Costs (9-10%)</strong> — 8% adjusted for 2-4% disposition friction,<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<strong>3. Transaction-Adjusted Threshold (9-10%)</strong> — Economic threshold + 2-4% disposition friction,<br>
             &nbsp;&nbsp;&nbsp;&nbsp;<strong>4. Market Timing Threshold (10-15%)</strong> — Exit to avoid peak market reversals,<br>
             &nbsp;&nbsp;&nbsp;&nbsp;<strong>5. IRR Preservation Threshold (12-16%)</strong> — Minimum deal IRR to maintain target fund quartile<br>
             <strong>)</strong>
@@ -154,9 +156,9 @@
                 </tr>
                 <tr>
                     <td><strong>Weak Deployment Environment</strong><br>Few Acquisition Opportunities<br><em>OR After Investment Period</em></td>
-                    <td>Pref Rate (Base Case)</td>
-                    <td>8-9%</td>
-                    <td>Hold unless asset genuinely underperforming. No opportunity cost from holding vs. redeploying.</td>
+                    <td>Economic Threshold (Base Case)</td>
+                    <td>5-10%</td>
+                    <td>Hold unless asset genuinely underperforming. Threshold varies by asset (5-7% mature, 8% fresh, 10%+ underwater).</td>
                 </tr>
             </tbody>
         </table>
@@ -166,14 +168,14 @@
         <p>Use the <strong>five-question framework</strong> (detailed below) to rapidly identify which threshold is binding for each asset:</p>
 
         <ol>
-            <li>Is Forward IRR < 8%? → Exit (destroying value)</li>
+            <li>Is Forward IRR below the economic threshold [8% × (Unreturned / Equity)]? → Exit (destroying value)</li>
             <li>Raising next fund soon & would drag IRR below target quartile? → Exit (IRR preservation)</li>
             <li>Market at peak with cap rate expansion risk? → Exit (market timing)</li>
             <li>Strong alternatives with IRR > asset + 3%? → Exit (opportunity cost)</li>
             <li>If none apply → Hold (asset clears all thresholds)</li>
         </ol>
 
-        <p><strong>The bottom line:</strong> Early in fund life, optimize for total value creation (MOIC). Late in fund life, protect IRR for fundraising. In peak markets, exit to avoid downside. When strong alternatives exist, redeploy capital. Only when none of these conditions apply does the simple "8% rule" become the actual decision driver.</p>
+        <p><strong>The bottom line:</strong> Early in fund life, optimize for total value creation (MOIC). Late in fund life, protect IRR for fundraising. In peak markets, exit to avoid downside. When strong alternatives exist, redeploy capital. Only when none of these conditions apply does the economic threshold become the actual decision driver.</p>
 
         <p><strong>Special case—Single Investor Separate Accounts:</strong> The framework above applies to commingled funds. For separate accounts (single LP mandates), the economics remain identical (8% pref threshold unchanged), but <strong>IRR Preservation Threshold drops significantly in importance</strong> because there's no multi-LP fundraising pressure or vintage ranking concerns. This creates a critical difference: separate accounts can hold assets with 11-13% forward IRR that commingled funds would exit to protect quartile rankings. The decision framework simplifies to focus on economic fundamentals (pref rate, alternatives, market timing) without the fundraising distortion. See Part II below for full analysis.</p>
 
@@ -208,28 +210,82 @@
         Incremental Profit = Asset Equity × Forward IRR × Hold Period<br>
         <br>
         <strong>Incremental Cost from Holding:</strong><br>
-        Incremental Pref Accrual = Unreturned Capital × Pref Rate × Hold Period<br>
+        Incremental Pref Accrual = Unreturned Capital × 8% × Hold Period<br>
         <br>
         <strong>Net Benefit from Holding:</strong><br>
         Net Benefit = Incremental Profit - Incremental Pref Accrual<br>
-        Net Benefit = Asset Equity × (Forward IRR - Pref Rate) × Hold Period<br>
+        Net Benefit = (Asset Equity × Forward IRR - Unreturned Capital × 8%) × Hold Period<br>
         <br>
         <strong>Optimal Exit Rule:</strong><br>
-        Hold if: Forward IRR > Pref Rate<br>
-        Exit if: Forward IRR < Pref Rate
+        Hold if: Asset Equity × Forward IRR > Unreturned Capital × 8%<br>
+        Simplifying: <strong>Forward IRR > 8% × (Unreturned Capital / Asset Equity)</strong><br>
+        <br>
+        Exit if: Forward IRR < 8% × (Unreturned Capital / Asset Equity)
     </div>
+
+    <h4>When Does This Simplify to "8%"?</h4>
+
+    <p>For <strong>fresh assets</strong> where no distributions have occurred, Unreturned Capital = Asset Equity, so the formula reduces to:</p>
+
+    <div class="formula">
+        Forward IRR > 8% × (Asset Equity / Asset Equity) = <strong>8%</strong>
+    </div>
+
+    <p>This is why the "8% rule" is familiar—it's correct for assets that haven't distributed capital. But the threshold adjusts for assets with different histories:</p>
+
+    <h4>Graduated Thresholds by Asset Type</h4>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Asset Type</th>
+                <th>Current Equity</th>
+                <th>Unreturned Capital</th>
+                <th>Threshold Calculation</th>
+                <th>Exit Threshold</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Mature (Distributed)</strong></td>
+                <td>$50M</td>
+                <td>$35M</td>
+                <td>8% × (35M / 50M)</td>
+                <td><strong>5.6%</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Fresh (No Distributions)</strong></td>
+                <td>$40M</td>
+                <td>$40M</td>
+                <td>8% × (40M / 40M)</td>
+                <td><strong>8.0%</strong></td>
+            </tr>
+            <tr>
+                <td><strong>Underwater (Distressed)</strong></td>
+                <td>$30M</td>
+                <td>$40M</td>
+                <td>8% × (40M / 30M)</td>
+                <td><strong>10.7%</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Key insight:</strong> The threshold varies because pref accrues on the <em>contractual unreturned capital</em>, not the current market value. A $50M asset with only $35M unreturned has a lower burden ($2.8M annual pref) relative to its equity base. An underwater $30M asset with $40M unreturned has a higher burden ($3.2M annual pref) relative to its equity base.</p>
+
+    <p><strong>Note on underwater assets:</strong> The higher threshold (10.7%) reflects the contractual mechanics of pref accrual, not a sunk cost anchor. The fund owes LPs pref on the original $40M investment, regardless of the asset's current value. This is an economic reality, not a behavioral bias.</p>
 
     <h3>Critical Insight: The Threshold is Asset-Specific</h3>
 
-    <p>The 8% threshold is determined by the <strong>marginal economics of the individual asset</strong>, not fund-level aggregates:</p>
+    <p>The economic threshold is determined by the <strong>marginal economics of the individual asset</strong>, specifically its Unreturned Capital and Current Equity:</p>
 
     <ul>
-        <li><strong>Fund age doesn't matter:</strong> A $10M asset accrues $800K annual pref whether the fund is Year 2 or Year 8</li>
+        <li><strong>Fund age doesn't matter:</strong> A $10M asset with $10M unreturned accrues $800K annual pref whether the fund is Year 2 or Year 8</li>
         <li><strong>Other assets don't matter:</strong> Each asset's exit decision is independent (assuming European waterfall)</li>
-        <li><strong>Fund position doesn't change the threshold:</strong> Whether the fund is below pref, in catch-up, or past catch-up, the economic threshold remains 8%</li>
+        <li><strong>Fund position doesn't change the threshold:</strong> Whether the fund is below pref, in catch-up, or past catch-up, the economic threshold remains 8% × (Unreturned / Equity)</li>
+        <li><strong>Asset history matters:</strong> An asset with $35M unreturned on $50M equity (5.6% threshold) has different economics than a fresh $50M asset (8.0% threshold)</li>
     </ul>
 
-    <p><strong>Why fund position matters for GP economics (but not the threshold):</strong> If the fund is in catch-up, the GP earns 50% of incremental profit vs. 20% if past catch-up. This changes <em>how much GP carry you earn</em>, but not <em>whether the asset creates value</em>. The 8% threshold is purely economic—it's the rate at which asset value creation exactly offsets pref accrual.</p>
+    <p><strong>Why fund position matters for GP economics (but not the threshold):</strong> If the fund is in catch-up, the GP earns 50% of incremental profit vs. 20% if past catch-up. This changes <em>how much GP carry you earn</em>, but not <em>whether the asset creates value</em>. The threshold is purely economic—it's the rate at which asset value creation exactly offsets pref accrual.</p>
 
     <h2>Case Studies: The 8% Rule in Action</h2>
 
@@ -251,17 +307,21 @@
             <strong>Forward IRR ≈ 4%</strong>
         </div>
 
-        <p><strong>Pref Accrual:</strong></p>
+        <p><strong>Exit Threshold Calculation:</strong></p>
         <div class="formula">
-            Annual Pref = $35M × 8% = $2.8M<br>
-            As % of Current Value = $2.8M / $50M = <strong>5.6%</strong>
+            Threshold = 8% × (Unreturned Capital / Current Equity)<br>
+            Threshold = 8% × ($35M / $50M) = <strong>5.6%</strong><br>
+            <br>
+            Annual Pref Accrual = $35M × 8% = $2.8M<br>
+            Annual Profit from Holding = $50M × 4% = $2.0M<br>
+            <strong>Net Drag = -$0.8M annually</strong>
         </div>
 
         <p><strong>Decision Analysis:</strong></p>
-        <p>Holding generates $2.0M annual value ($50M × 4%) but incurs $2.8M annual pref, creating <strong>negative $0.8M annual drag</strong> on fund economics.</p>
+        <p>This mature asset (with prior distributions) has a lower threshold (5.6%) than a fresh asset (8.0%). But the Forward IRR (4%) still falls below even this reduced threshold, creating negative economic value.</p>
 
         <p style="background: #ffe6e6; padding: 10px; border-left: 3px solid #ff4444;">
-            <strong>EXIT.</strong> Forward IRR (4%) < Pref Rate (8%). This is destroying economic value.
+            <strong>EXIT.</strong> Forward IRR (4%) < Threshold (5.6%). Holding generates $2.0M profit but incurs $2.8M pref, destroying economic value.
         </p>
     </div>
 
@@ -297,6 +357,15 @@
             <li>60% occupied (down from 95%), negative cash flow: -$1M annually</li>
         </ul>
 
+        <p><strong>Exit Threshold Calculation:</strong></p>
+        <div class="formula">
+            Threshold = 8% × (Unreturned Capital / Current Equity)<br>
+            Threshold = 8% × ($40M / $30M) = <strong>10.7%</strong><br>
+            <br>
+            This underwater asset has a <em>higher</em> threshold because pref accrues on<br>
+            the contractual $40M unreturned capital, not the depressed $30M market value.
+        </div>
+
         <p><strong>Forward IRR:</strong></p>
         <div class="formula">
             Expected value in 2 years: $12M (continued decline)<br>
@@ -305,17 +374,15 @@
             <strong>Forward IRR = -16.7%</strong>
         </div>
 
-        <p><strong>Pref Accrual:</strong> $30M × 8% = $2.4M annually</p>
-
         <p><strong>Decision Analysis:</strong></p>
-        <p>Asset destroying value at -16.7% while simultaneously accruing $2.4M annual pref. Every quarter of delay worsens fund economics.</p>
+        <p>Forward IRR (-16.7%) << Threshold (10.7%). Asset destroying value while accruing $3.2M annual pref ($40M × 8%). Every quarter of delay worsens fund economics.</p>
 
         <p style="background: #ffe6e6; padding: 10px; border-left: 3px solid #ff4444;">
-            <strong>EXIT IMMEDIATELY.</strong> Sell for $15M, realize $15M loss, but stop hemorrhaging value and reduce future pref accrual by $1.2M annually.
+            <strong>EXIT IMMEDIATELY.</strong> Sell for $15M, realize $15M loss, but stop hemorrhaging value and reduce future pref accrual by $3.2M annually.
         </p>
 
         <div class="warning">
-            <strong>Sunk Cost Trap:</strong> GPs may resist selling at a loss, hoping for recovery. But the correct framework is forward-looking: compare forward IRR (negative) to pref rate (8%). The original $30M investment is a sunk cost—holding longer doesn't change the past.
+            <strong>Why the higher threshold isn't a sunk cost trap:</strong> The 10.7% threshold reflects the contractual reality that the fund owes LPs pref on $40M unreturned capital, regardless of current market value. This is an economic fact written into the fund agreement, not a psychological anchor. The forward-looking question remains: does holding this asset create value after accounting for the pref burden it generates? Here, the answer is clearly no.
         </div>
     </div>
 
@@ -326,9 +393,10 @@
     <p>For rapid assessment of exit timing decisions, answer these questions sequentially:</p>
 
     <div class="formula">
-        <strong>Question 1: Is Forward IRR < Pref Rate (8%)?</strong><br>
+        <strong>Question 1: Is Forward IRR < 8% × (Unreturned Capital / Current Equity)?</strong><br>
         If YES → <strong>EXIT.</strong> Asset is destroying economic value.<br>
         If NO → Proceed to Question 2.<br>
+        <em>Note: For fresh assets (no distributions), this simplifies to "Is Forward IRR < 8%?"</em><br>
         <br>
         <strong>Question 2: Are you raising next fund within 18 months?</strong><br>
         If YES → Check if asset Forward IRR < IRR Preservation Threshold (typically 12-16%).<br>
@@ -368,16 +436,16 @@
 
     <div class="formula">
         <strong>Exit if: Forward IRR < Max(</strong><br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Pref Rate (8%),<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Economic Threshold: 8% × (Unreturned Capital / Current Equity),<br>
         &nbsp;&nbsp;&nbsp;&nbsp;Alternative Deployment IRR,<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;Pref Rate + (Transaction Costs / Hold Period),<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Transaction-Adjusted Threshold,<br>
         &nbsp;&nbsp;&nbsp;&nbsp;Market Timing Threshold,<br>
         &nbsp;&nbsp;&nbsp;&nbsp;IRR Preservation Threshold<br>
         <strong>)</strong><br>
         <br>
         <strong>Component Definitions:</strong><br>
         <ul style="margin: 10px 0; padding-left: 20px; list-style-type: disc;">
-            <li><strong>Pref Rate:</strong> 8% contractual LP hurdle (economic baseline)</li>
+            <li><strong>Economic Threshold:</strong> 8% × (Unreturned / Equity) — typically 5-8% for mature assets, 8% for fresh assets, 10%+ for underwater assets</li>
             <li><strong>Alternative Deployment IRR:</strong> Expected return from redeploying capital into new acquisitions. <strong>Only applies during investment period</strong> (typically first 3 years) — after investment period closes, proceeds cannot be redeployed, so this threshold drops away.</li>
             <li><strong>Transaction-Adjusted Threshold:</strong> 8% + (2-4% costs / expected hold period)</li>
             <li><strong>Market Timing Threshold:</strong> May rise to 12-15% in peak markets to avoid regime shifts</li>
@@ -423,9 +491,9 @@
             </tr>
             <tr>
                 <td><strong>Weak Deployment Environment</strong><br>Few Acquisition Opportunities</td>
-                <td>Pref Rate (Base Case)</td>
-                <td>8-9%</td>
-                <td>Hold unless asset genuinely underperforming. No opportunity cost from holding vs. redeploying.</td>
+                <td>Economic Threshold (Base Case)</td>
+                <td>5-10%</td>
+                <td>Hold unless asset genuinely underperforming. Threshold varies by asset (5-7% mature, 8% fresh, 10%+ underwater).</td>
             </tr>
         </tbody>
     </table>
@@ -434,7 +502,7 @@
 
     <h3>The IRR vs. MOIC Trade-Off: Why GPs Exit "Good" Assets</h3>
 
-    <p>The "Forward IRR > 8%" rule assumes the objective is <strong>maximizing current fund GP carry dollars</strong>. But GPs optimize for <strong>lifetime career earnings</strong>, not just current fund economics. This creates systematic divergence from the 8% rule.</p>
+    <p>The economic threshold rule assumes the objective is <strong>maximizing current fund GP carry dollars</strong>. But GPs optimize for <strong>lifetime career earnings</strong>, not just current fund economics. This creates systematic divergence from the baseline threshold.</p>
 
     <h4>Two Different Measures of Success</h4>
 
@@ -737,7 +805,7 @@
     <div class="case-study">
         <p><strong>Scenario:</strong> Fund is in catch-up phase with $200M profits above pref. GP needs $50M more profit to complete catch-up.</p>
 
-        <p><strong>Asset:</strong> Stabilized multifamily, $50M equity, <strong>9% forward IRR</strong> (above 8% pref threshold)</p>
+        <p><strong>Asset:</strong> Stabilized multifamily, $50M equity, <strong>9% forward IRR</strong> (above economic threshold)</p>
 
         <p><strong>Alternative:</strong> Exit and redeploy into value-add industrial with <strong>14% projected IRR</strong></p>
 
@@ -786,7 +854,7 @@
 
     <p><strong>From LP perspective:</strong> Direct 80/20 (no catch-up) provides better alignment on exit timing. However, catch-up structures are industry standard because they improve GP firm economics by providing earlier carry distributions.</p>
 
-    <p><strong>Bottom line:</strong> The catch-up structure doesn't change the economic threshold (Forward IRR > 8% pref), but it does create time-varying GP incentives. Portfolio managers should ensure exit decisions are driven by economics, not by GP incentives to maximize catch-up earnings. Be particularly vigilant when the fund is in catch-up phase.</p>
+    <p><strong>Bottom line:</strong> The catch-up structure doesn't change the economic threshold [Forward IRR > 8% × (Unreturned / Equity)], but it does create time-varying GP incentives. Portfolio managers should ensure exit decisions are driven by economics, not by GP incentives to maximize catch-up earnings. Be particularly vigilant when the fund is in catch-up phase.</p>
 
     <hr style="border: none; border-top: 3px solid #3498db; margin: 40px 0;">
 
@@ -802,11 +870,11 @@
 
     <h4>Economic Threshold: Unchanged</h4>
 
-    <p><strong>The 8% pref threshold remains the economic baseline.</strong> Whether the fund has 1 LP or 50 LPs, the mathematics are identical:</p>
+    <p><strong>The economic threshold formula remains the same.</strong> Whether the fund has 1 LP or 50 LPs, the mathematics are identical:</p>
 
     <ul>
         <li>Pref still accrues on unreturned capital at 8% annually</li>
-        <li>Holding an asset with <strong>Forward IRR < 8%</strong> still destroys economic value</li>
+        <li>Holding an asset with <strong>Forward IRR below the economic threshold</strong> still destroys economic value</li>
         <li>The threshold (Forward IRR > Pref Rate) is derived from waterfall mechanics, not LP structure</li>
     </ul>
 
@@ -823,9 +891,9 @@
         </thead>
         <tbody>
             <tr>
-                <td><strong>1. Pref Rate (8%)</strong></td>
-                <td>Economic baseline</td>
-                <td>Economic baseline</td>
+                <td><strong>1. Economic Threshold</strong></td>
+                <td>8% × (Unreturned / Equity)</td>
+                <td>8% × (Unreturned / Equity)</td>
                 <td><strong>No change</strong> — Math is identical</td>
             </tr>
             <tr>
@@ -950,7 +1018,7 @@
     <div class="formula">
         <strong>Separate Account Exit Decision (Streamlined):</strong><br>
         <br>
-        <strong>Question 1:</strong> Is Forward IRR < 8%? → <strong>EXIT</strong> (destroying value)<br>
+        <strong>Question 1:</strong> Is Forward IRR < 8% × (Unreturned / Equity)? → <strong>EXIT</strong> (destroying value)<br>
         <br>
         <strong>Question 2:</strong> Has the LP explicitly stated an IRR target or quartile goal?<br>
         &nbsp;&nbsp;&nbsp;&nbsp;If YES and asset would drag below target → <strong>EXIT</strong><br>
@@ -980,7 +1048,7 @@
 
     <h4>Bottom Line: Separate Accounts</h4>
 
-    <p><strong>Economic threshold unchanged:</strong> Forward IRR > 8% pref rate remains the baseline.</p>
+    <p><strong>Economic threshold unchanged:</strong> Forward IRR > 8% × (Unreturned Capital / Current Equity) remains the baseline.</p>
 
     <p><strong>What changes:</strong> IRR Preservation Threshold (12-16%) drops significantly in importance—typically only binding if LP explicitly specifies IRR targets. This shifts decision-making toward economic fundamentals:</p>
 
