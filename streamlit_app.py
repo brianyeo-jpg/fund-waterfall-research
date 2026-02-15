@@ -51,6 +51,24 @@ elif page == "Exit Decision Calculator":
         # Asset
         forward_irr = st.number_input("Asset Forward IRR (%)", min_value=0.0, max_value=30.0, value=11.0, step=0.5)
 
+        st.markdown("**Economic Threshold Inputs**")
+        current_equity = st.number_input(
+            "Current Asset Equity ($M)",
+            min_value=0.1,
+            max_value=1000.0,
+            value=40.0,
+            step=5.0,
+            help="Current market value of the asset equity"
+        )
+        unreturned_capital = st.number_input(
+            "Unreturned Capital ($M)",
+            min_value=0.1,
+            max_value=1000.0,
+            value=40.0,
+            step=5.0,
+            help="Original equity invested minus distributions. Set equal to Current Equity for fresh assets (no distributions)."
+        )
+
         st.markdown("---")
 
         # Fund structure
@@ -107,6 +125,9 @@ elif page == "Exit Decision Calculator":
         pref_rate_dec = pref_rate / 100
         alternative_irr_dec = alternative_irr / 100 if has_alternatives else 0.0
 
+        # Calculate economic threshold using corrected formula
+        economic_threshold = pref_rate * (unreturned_capital / current_equity)
+
         # ==========================================
         # PRE-CALCULATE DECISION FOR SUMMARY BOX
         # ==========================================
@@ -114,10 +135,10 @@ elif page == "Exit Decision Calculator":
         decision_driver = None
         decision_question = None
 
-        # Question 1: Below pref?
-        if forward_irr < pref_rate:
+        # Question 1: Below economic threshold?
+        if forward_irr < economic_threshold:
             decision = "EXIT"
-            decision_driver = "Below Pref"
+            decision_driver = "Below Economic Threshold"
             decision_question = 1
 
         # Question 2: IRR preservation (only for commingled funds)
@@ -175,12 +196,26 @@ elif page == "Exit Decision Calculator":
         # DETAILED QUESTIONS (with expanders)
         # ==========================================
 
-        # Question 1: Below pref?
-        with st.expander("Question 1: Forward IRR vs Pref Rate", expanded=(decision_question == 1 or decision_question == 5)):
-            if forward_irr < pref_rate:
-                st.error(f"❌ **{forward_irr:.1f}% < {pref_rate:.1f}%** → EXIT (Destroying value)")
+        # Question 1: Below economic threshold?
+        with st.expander("Question 1: Forward IRR vs Economic Threshold", expanded=(decision_question == 1 or decision_question == 5)):
+            # Determine asset type for display
+            if unreturned_capital < current_equity:
+                asset_type = "Mature (Distributed)"
+            elif unreturned_capital > current_equity:
+                asset_type = "Underwater (Distressed)"
             else:
-                st.success(f"✅ {forward_irr:.1f}% > {pref_rate:.1f}% (Pass)")
+                asset_type = "Fresh (No Distributions)"
+
+            st.markdown(f"**Economic Threshold Calculation:**")
+            st.code(f"Threshold = {pref_rate:.1f}% × (${unreturned_capital:.1f}M / ${current_equity:.1f}M) = {economic_threshold:.1f}%")
+            st.markdown(f"*Asset Type: {asset_type}*")
+
+            if forward_irr < economic_threshold:
+                st.error(f"❌ **{forward_irr:.1f}% < {economic_threshold:.1f}%** → EXIT (Destroying value)")
+                st.markdown(f"Annual pref accrual (${unreturned_capital:.1f}M × {pref_rate:.1f}% = ${unreturned_capital * pref_rate / 100:.2f}M) exceeds profit from holding (${current_equity:.1f}M × {forward_irr:.1f}% = ${current_equity * forward_irr / 100:.2f}M)")
+            else:
+                st.success(f"✅ {forward_irr:.1f}% > {economic_threshold:.1f}% (Pass)")
+                st.markdown(f"Profit from holding (${current_equity * forward_irr / 100:.2f}M) exceeds pref accrual (${unreturned_capital * pref_rate / 100:.2f}M)")
 
         # Question 2: IRR preservation (only for commingled funds)
         with st.expander("Question 2: IRR Preservation (Fundraising)", expanded=(decision_question == 2)):
@@ -237,15 +272,31 @@ elif page == "Exit Decision Calculator":
 
         # Summary of thresholds
         with st.expander("📊 View Threshold Summary"):
+            # Determine asset type
+            if unreturned_capital < current_equity:
+                asset_type_desc = "Mature (Distributed)"
+            elif unreturned_capital > current_equity:
+                asset_type_desc = "Underwater (Distressed)"
+            else:
+                asset_type_desc = "Fresh (No Distributions)"
+
             st.markdown(f"""
-            **Thresholds Evaluated:**
-            - Pref Rate: {pref_rate:.1f}%
+            **Economic Threshold:**
+            - Formula: {pref_rate:.1f}% × (${unreturned_capital:.1f}M / ${current_equity:.1f}M) = **{economic_threshold:.1f}%**
+            - Asset Type: {asset_type_desc}
+
+            **Asset Metrics:**
             - Asset Forward IRR: {forward_irr:.1f}%
+            - Current Equity: ${current_equity:.1f}M
+            - Unreturned Capital: ${unreturned_capital:.1f}M
+
+            **Other Thresholds:**
+            - Pref Rate: {pref_rate:.1f}%
             - Alternative Deployment: {alternative_irr:.1f}% (if applicable)
+
+            **Fund Context:**
             - Fund Type: {fund_type}
             - Fund Stage: {fund_stage}
-
-            **Key Context:**
             - {"Raising next fund soon" if raising_soon else "No near-term fundraise"}
             - {"Peak market conditions" if peak_market else "Normal market conditions"}
             - {"Strong alternatives available" if has_alternatives else "Limited alternatives"}
