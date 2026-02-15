@@ -4,6 +4,7 @@ Displays the research document with optional interactive calculators
 """
 import streamlit as st
 import streamlit.components.v1 as components
+import os
 
 # Page config
 st.set_page_config(
@@ -19,8 +20,9 @@ page = st.sidebar.radio(
 )
 
 if page == "Research Findings":
-    # Read HTML content
-    with open("fund_waterfall_research_v2.html", "r", encoding="utf-8") as f:
+    # Read HTML content with absolute path
+    html_path = os.path.join(os.path.dirname(__file__), "fund_waterfall_research_v2.html")
+    with open(html_path, "r", encoding="utf-8") as f:
         html_content = f.read()
 
     # Display with large fixed height - browser's native scroll will work
@@ -47,6 +49,16 @@ elif page == "Exit Decision Calculator":
 
     with col1:
         st.subheader("Asset & Fund Context")
+
+        # Question 0: Leverage/debt maturity pre-condition
+        st.markdown("**Pre-Condition Check**")
+        debt_maturity = st.checkbox(
+            "Debt maturing within 12 months (unrefin anceable)?",
+            value=False,
+            help="If yes, exit is mandatory regardless of forward IRR - structural constraint"
+        )
+
+        st.markdown("---")
 
         # Asset
         forward_irr = st.number_input("Asset Forward IRR (%)", min_value=0.0, max_value=30.0, value=11.0, step=0.5)
@@ -102,13 +114,16 @@ elif page == "Exit Decision Calculator":
             if raising_soon:
                 current_fund_irr = st.number_input("Current Fund IRR (%)", min_value=0.0, max_value=40.0, value=19.0, step=0.5)
                 target_quartile_cutoff = st.number_input("Target Quartile Cutoff (%)", min_value=0.0, max_value=40.0, value=18.0, step=0.5)
+                fund_nav = st.number_input("Fund NAV ($M)", min_value=1.0, max_value=10000.0, value=400.0, step=10.0, help="Total fund net asset value for materiality calculation")
                 would_drag_irr = st.checkbox("Holding this asset would drag fund below target quartile?")
             else:
                 raising_soon = False
                 would_drag_irr = False
+                fund_nav = 0
         else:
             raising_soon = False
             would_drag_irr = False
+            fund_nav = 0
 
         st.markdown("---")
 
@@ -120,11 +135,6 @@ elif page == "Exit Decision Calculator":
     with col2:
         st.subheader("Five-Question Framework")
 
-        # Convert to decimals
-        forward_irr_dec = forward_irr / 100
-        pref_rate_dec = pref_rate / 100
-        alternative_irr_dec = alternative_irr / 100 if has_alternatives else 0.0
-
         # Calculate economic threshold using corrected formula
         economic_threshold = pref_rate * (unreturned_capital / current_equity)
 
@@ -135,22 +145,39 @@ elif page == "Exit Decision Calculator":
         decision_driver = None
         decision_question = None
 
-        # Question 1: Below economic threshold?
-        if forward_irr < economic_threshold:
+        # Question 0: Debt maturity pre-condition
+        if debt_maturity:
             decision = "EXIT"
-            decision_driver = "Below Economic Threshold"
-            decision_question = 1
+            decision_driver = "Debt Maturity (Structural Constraint)"
+            decision_question = 0
+
+        # Question 1: Below economic threshold?
+        if decision is None:
+            if forward_irr < economic_threshold:
+                decision = "EXIT"
+                decision_driver = "Below Economic Threshold"
+                decision_question = 1
 
         # Question 2: IRR preservation (only for commingled funds)
         if decision is None:
             if fund_type == "Commingled Fund" and raising_soon and would_drag_irr:
-                decision = "EXIT"
-                decision_driver = "IRR Preservation"
-                decision_question = 2
+                # Apply materiality threshold: >10% of NAV or >25 bps IRR drag
+                asset_pct_of_nav = (current_equity / fund_nav) * 100 if fund_nav > 0 else 0
+                # Simplified IRR drag calculation (rough approximation)
+                irr_drag_bps = abs(current_fund_irr - target_quartile_cutoff) * 100
+
+                is_material = (asset_pct_of_nav > 10) or (irr_drag_bps > 25)
+
+                if is_material:
+                    decision = "EXIT"
+                    decision_driver = "IRR Preservation (Material Impact)"
+                    decision_question = 2
 
         # Question 3: Peak market
         if decision is None:
             if peak_market:
+                # Use simple 2x for rough heuristic (compounded would be ((1 + forward_irr/100)^2 - 1) * 100)
+                # But per research, simple 2x is acceptable approximation for typical REPE IRRs
                 two_year_gains = forward_irr * 2
                 if downside_risk > two_year_gains:
                     decision = "EXIT"
@@ -160,13 +187,17 @@ elif page == "Exit Decision Calculator":
         # Question 4: Opportunity cost
         if decision is None:
             if has_alternatives:
-                if fund_stage == "Early (Years 1-4)" and alternative_irr > forward_irr + 3:
-                    decision = "EXIT"
-                    decision_driver = "Opportunity Cost"
-                    decision_question = 4
-                elif fund_stage in ["Mid (Years 5-7)", "Late (Years 8-10)"] and alternative_irr > forward_irr + 3:
-                    spread = alternative_irr - forward_irr
+                spread = alternative_irr - forward_irr
+                # CORRECTED LOGIC: Early stage should have HIGHER threshold (more friction tolerance)
+                # Early: exit if spread > 5% (aggressive capital deployment)
+                # Mid/Late: exit if spread > 3% (less friction, easier to exit)
+                if fund_stage == "Early (Years 1-4)":
                     if spread > 5:
+                        decision = "EXIT"
+                        decision_driver = "Opportunity Cost"
+                        decision_question = 4
+                elif fund_stage in ["Mid (Years 5-7)", "Late (Years 8-10)"]:
+                    if spread > 3:
                         decision = "EXIT"
                         decision_driver = "Opportunity Cost"
                         decision_question = 4
@@ -196,6 +227,14 @@ elif page == "Exit Decision Calculator":
         # DETAILED QUESTIONS (with expanders)
         # ==========================================
 
+        # Question 0: Debt maturity pre-condition
+        with st.expander("Question 0: Debt Maturity Pre-Condition", expanded=(decision_question == 0)):
+            if debt_maturity:
+                st.error("❌ **MANDATORY EXIT** - Debt maturing within 12 months, refinancing unavailable")
+                st.markdown("This is a structural constraint, not an economic optimization. Proceed to disposition planning immediately.")
+            else:
+                st.success("✅ No near-term debt maturity forcing exit")
+
         # Question 1: Below economic threshold?
         with st.expander("Question 1: Forward IRR vs Economic Threshold", expanded=(decision_question == 1 or decision_question == 5)):
             # Determine asset type for display
@@ -224,8 +263,21 @@ elif page == "Exit Decision Calculator":
             elif not raising_soon:
                 st.info("⊘ **N/A** - No near-term fundraise")
             elif would_drag_irr:
-                st.error(f"❌ **EXIT** - Would drag fund below {target_quartile_cutoff:.1f}% target quartile")
-                st.markdown(f"Current IRR: {current_fund_irr:.1f}% → Protect fundraising capacity")
+                # Show materiality calculation
+                asset_pct_of_nav = (current_equity / fund_nav) * 100 if fund_nav > 0 else 0
+                irr_drag_bps = abs(current_fund_irr - target_quartile_cutoff) * 100
+
+                st.markdown(f"**Materiality Check:**")
+                st.code(f"Asset % of NAV: {asset_pct_of_nav:.1f}% (threshold: >10%)\nIRR Drag: {irr_drag_bps:.0f} bps (threshold: >25 bps)")
+
+                is_material = (asset_pct_of_nav > 10) or (irr_drag_bps > 25)
+
+                if is_material:
+                    st.error(f"❌ **EXIT** - Would drag fund below {target_quartile_cutoff:.1f}% target quartile (material impact)")
+                    st.markdown(f"Current IRR: {current_fund_irr:.1f}% → Protect fundraising capacity")
+                else:
+                    st.warning(f"⚠️ Would drag IRR but impact is **immaterial** ({asset_pct_of_nav:.1f}% of NAV, {irr_drag_bps:.0f} bps drag)")
+                    st.markdown("Proceed to Question 3")
             else:
                 st.success(f"✅ Maintains fund at {current_fund_irr:.1f}% (above {target_quartile_cutoff:.1f}% target)")
 
@@ -235,10 +287,12 @@ elif page == "Exit Decision Calculator":
                 st.info("⊘ **N/A** - No peak market signals")
             else:
                 # Rule: if downside risk > 2 years of forward returns, exit
+                # Using simple 2x heuristic (compound would be ((1 + IRR/100)^2 - 1) * 100, but difference is small for typical IRRs)
                 two_year_gains = forward_irr * 2
                 if downside_risk > two_year_gains:
                     st.error(f"❌ **EXIT** - Downside risk ({downside_risk}%) > 2yr forward gains ({two_year_gains:.1f}%)")
                     st.markdown("→ Market timing risk outweighs forward IRR")
+                    st.markdown("*Peak indicators: cap spreads to Treasuries at lows, high transaction volume, Fed tightening*")
                 else:
                     st.success(f"✅ Downside manageable ({downside_risk}% < {two_year_gains:.1f}% 2yr gains)")
 
@@ -246,20 +300,29 @@ elif page == "Exit Decision Calculator":
         with st.expander("Question 4: Alternative Deployment", expanded=(decision_question == 4)):
             if not has_alternatives:
                 st.info("⊘ **N/A** - No strong deployment alternatives")
-            elif fund_stage == "Early (Years 1-4)" and alternative_irr > forward_irr + 3:
-                spread = alternative_irr - forward_irr
-                st.error(f"❌ **EXIT** - Alternative ({alternative_irr:.1f}%) > Asset + 3% ({forward_irr + 3:.1f}%)")
-                st.markdown(f"**Opportunity cost:** {spread:.1f}% spread")
-            elif fund_stage in ["Mid (Years 5-7)", "Late (Years 8-10)"] and alternative_irr > forward_irr + 3:
-                spread = alternative_irr - forward_irr
-                st.warning(f"⚠️ **CONSIDER EXIT** - Alternative ({alternative_irr:.1f}%) > Asset + 3%")
-                st.markdown(f"Spread: {spread:.1f}%. In {fund_stage.split('(')[0].strip()} stage, balance opportunity cost vs transaction friction")
-                if spread > 5:
-                    st.error(f"❌ **EXIT** - {spread:.1f}% spread too large to ignore")
-                else:
-                    st.success(f"✅ {spread:.1f}% spread modest - transaction friction may favor holding")
             else:
-                st.success(f"✅ No compelling alternatives (Alternative: {alternative_irr:.1f}% vs Asset: {forward_irr:.1f}%)")
+                spread = alternative_irr - forward_irr
+
+                # CORRECTED LOGIC: Early stage has HIGHER threshold (more friction)
+                if fund_stage == "Early (Years 1-4)":
+                    st.markdown(f"**Early Stage:** Higher friction tolerance (5% threshold)")
+                    st.markdown(f"Spread: {spread:.1f}% = Alternative ({alternative_irr:.1f}%) - Asset ({forward_irr:.1f}%)")
+
+                    if spread > 5:
+                        st.error(f"❌ **EXIT** - {spread:.1f}% spread exceeds 5% early-stage threshold")
+                        st.markdown("Aggressive capital deployment justified")
+                    else:
+                        st.success(f"✅ {spread:.1f}% spread < 5% threshold - transaction friction favors holding")
+
+                elif fund_stage in ["Mid (Years 5-7)", "Late (Years 8-10)"]:
+                    st.markdown(f"**{fund_stage.split('(')[0].strip()} Stage:** Lower friction tolerance (3% threshold)")
+                    st.markdown(f"Spread: {spread:.1f}% = Alternative ({alternative_irr:.1f}%) - Asset ({forward_irr:.1f}%)")
+
+                    if spread > 3:
+                        st.error(f"❌ **EXIT** - {spread:.1f}% spread exceeds 3% {fund_stage.split('(')[0].strip().lower()}-stage threshold")
+                        st.markdown("Lower friction in mature fund justifies exit")
+                    else:
+                        st.success(f"✅ {spread:.1f}% spread < 3% threshold - hold to avoid unnecessary transaction costs")
 
         # Question 5: Default decision
         with st.expander("Question 5: Default Decision", expanded=(decision_question == 5)):
@@ -280,27 +343,56 @@ elif page == "Exit Decision Calculator":
             else:
                 asset_type_desc = "Fresh (No Distributions)"
 
-            st.markdown(f"""
-            **Economic Threshold:**
+            # Calculate applicable thresholds
+            asset_pct_nav = (current_equity / fund_nav) * 100 if raising_soon and fund_nav > 0 else 0
+            opp_cost_threshold = 5 if fund_stage == "Early (Years 1-4)" else 3
+
+            summary_text = f"""
+            **Pre-Condition:**
+            - Debt Maturity: {"YES - Mandatory Exit" if debt_maturity else "No"}
+
+            **Economic Threshold (Question 1):**
             - Formula: {pref_rate:.1f}% × (${unreturned_capital:.1f}M / ${current_equity:.1f}M) = **{economic_threshold:.1f}%**
             - Asset Type: {asset_type_desc}
-
-            **Asset Metrics:**
             - Asset Forward IRR: {forward_irr:.1f}%
-            - Current Equity: ${current_equity:.1f}M
-            - Unreturned Capital: ${unreturned_capital:.1f}M
 
-            **Other Thresholds:**
-            - Pref Rate: {pref_rate:.1f}%
-            - Alternative Deployment: {alternative_irr:.1f}% (if applicable)
-
-            **Fund Context:**
+            **IRR Preservation (Question 2):**
             - Fund Type: {fund_type}
+            - Raising Soon: {"Yes" if raising_soon else "No"}
+            """
+
+            if raising_soon and fund_type == "Commingled Fund":
+                summary_text += f"""- Fund NAV: ${fund_nav:.0f}M
+            - Asset % of NAV: {asset_pct_nav:.1f}% (materiality: >10%)
+            - Current Fund IRR: {current_fund_irr:.1f}%
+            - Target Quartile: {target_quartile_cutoff:.1f}%
+            """
+
+            summary_text += f"""
+            **Market Timing (Question 3):**
+            - Peak Market: {"Yes" if peak_market else "No"}
+            """
+
+            if peak_market:
+                two_year_gains = forward_irr * 2
+                summary_text += f"""- Downside Risk: {downside_risk}%
+            - 2-Year Forward Gains: {two_year_gains:.1f}%
+            """
+
+            summary_text += f"""
+            **Opportunity Cost (Question 4):**
+            - Alternatives Available: {"Yes" if has_alternatives else "No"}
             - Fund Stage: {fund_stage}
-            - {"Raising next fund soon" if raising_soon else "No near-term fundraise"}
-            - {"Peak market conditions" if peak_market else "Normal market conditions"}
-            - {"Strong alternatives available" if has_alternatives else "Limited alternatives"}
-            """)
+            - Threshold: {opp_cost_threshold}% spread
+            """
+
+            if has_alternatives:
+                spread = alternative_irr - forward_irr
+                summary_text += f"""- Alternative IRR: {alternative_irr:.1f}%
+            - Spread: {spread:.1f}%
+            """
+
+            st.markdown(summary_text)
 
 else:  # About page
     st.title("About This Research")
