@@ -23,9 +23,9 @@ if page == "Research Findings":
     with open("fund_waterfall_research_v2.html", "r", encoding="utf-8") as f:
         html_content = f.read()
 
-    # Display the HTML content directly using markdown (no iframe, no internal scrolling)
-    # This allows the browser's native scroll to work
-    st.components.v1.html(html_content, height=None, scrolling=False)
+    # Display with large fixed height - browser's native scroll will work
+    # Set height large enough to contain full document (~15000px)
+    st.components.v1.html(html_content, height=15000, scrolling=False)
 
     st.sidebar.markdown("---")
     st.sidebar.markdown("### 📄 Download")
