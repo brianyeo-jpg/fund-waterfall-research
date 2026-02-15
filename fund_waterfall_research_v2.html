@@ -287,6 +287,8 @@
 
     <p><strong>Why fund position matters for GP economics (but not the threshold):</strong> If the fund is in catch-up, the GP earns 50% of incremental profit vs. 20% if past catch-up. This changes <em>how much GP carry you earn</em>, but not <em>whether the asset creates value</em>. The threshold is purely economic—it's the rate at which asset value creation exactly offsets pref accrual.</p>
 
+    <p><strong>Important clarification on "independence":</strong> The statement "each asset's exit decision is independent" applies strictly to the <em>economic threshold calculation</em> [8% × (Unreturned / Equity)], which depends only on that asset's specific unreturned capital and current equity. However, the <em>portfolio-level thresholds</em>—IRR Preservation Threshold (Question 2) and Market Timing Threshold (Question 3)—explicitly require fund-level and macro context. The framework is not contradictory: asset-level economics are independent, but strategic exit decisions incorporate portfolio and market considerations. Think of it as: "Calculate thresholds independently, but apply the binding constraint that accounts for fund-wide objectives."</p>
+
     <h2>Case Studies: The 8% Rule in Action</h2>
 
     <div class="case-study">
@@ -392,6 +394,8 @@
 
     <p>For rapid assessment of exit timing decisions, answer these questions sequentially:</p>
 
+    <p><strong>Pre-Condition (Question 0):</strong> Before evaluating forward IRR thresholds, confirm the asset has no near-term debt maturities or covenant breaches that would force exit regardless of returns. If debt is maturing within 12 months and refinancing is unavailable or uneconomic, exit becomes mandatory. This is a structural constraint, not an economic optimization—proceed to disposition planning immediately.</p>
+
     <div class="formula">
         <strong>Question 1: Is Forward IRR < 8% × (Unreturned Capital / Current Equity)?</strong><br>
         If YES → <strong>EXIT.</strong> Asset is destroying economic value.<br>
@@ -400,12 +404,12 @@
         <br>
         <strong>Question 2: Are you raising next fund within 18 months?</strong><br>
         If YES → Check if asset Forward IRR < IRR Preservation Threshold (typically 12-16%).<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;If asset would drag fund below target quartile → <strong>EXIT</strong> (IRR preservation dominates).<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;If asset maintains or improves fund IRR → Proceed to Question 3.<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;If asset would drag fund below target quartile <em>and represents >10% of fund NAV or >25 bps IRR drag</em> → <strong>EXIT</strong> (IRR preservation dominates).<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;If asset maintains or improves fund IRR, or impact is immaterial → Proceed to Question 3.<br>
         If NO → Proceed to Question 3.<br>
         <br>
         <strong>Question 3: Are cap rates at historic lows or is market at peak?</strong><br>
-        If YES → Estimate downside risk from cap rate expansion (e.g., 200 bps = -30% value).<br>
+        If YES → Estimate downside risk from cap rate expansion (e.g., 200 bps = -30% value). <em>Peak market indicators: cap rate spreads to 10Y Treasuries in bottom decile historically, transaction volume at multi-year highs, Fed tightening cycle, elevated asset-to-replacement cost ratios.</em><br>
         &nbsp;&nbsp;&nbsp;&nbsp;If expected value loss > 2 years of Forward IRR gains → <strong>EXIT</strong> (market timing dominates).<br>
         &nbsp;&nbsp;&nbsp;&nbsp;If fundamentals strong and cap rate risk manageable → Proceed to Question 4.<br>
         If NO → Proceed to Question 4.<br>
