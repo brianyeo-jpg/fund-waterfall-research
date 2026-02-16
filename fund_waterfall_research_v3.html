@@ -166,6 +166,8 @@ HOLD if: Forward IRR &gt; 8% × (Unreturned Capital / Asset Equity)<br>
 EXIT if: Forward IRR &lt; 8% × (Unreturned Capital / Asset Equity)
 </div>
 
+<p><strong>Definitions:</strong> "Asset Equity" (or "Current Equity") refers to the current market value of the fund's equity position in the asset—not the original cost basis or total invested capital. "Unreturned Capital" is the contractual amount of LP capital not yet returned through distributions, which remains fixed regardless of current asset value. The divergence between these two figures is what creates asset-specific thresholds: mature assets with significant distributions have low unreturned capital relative to current equity (lowering the threshold), while impaired assets have high unreturned capital relative to depressed equity (raising it).</p>
+
 <p><strong>When does this simplify to "8%"?</strong> For fresh assets where Unreturned Capital = Asset Equity, the formula reduces to Forward IRR &gt; 8%. This is why the "8% rule" is familiar—it's correct for assets that haven't distributed capital.</p>
 
 <h3>Graduated Thresholds by Asset Type</h3>
