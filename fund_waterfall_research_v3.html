@@ -142,8 +142,6 @@ Exit if: Forward IRR &lt; 8% × (Unreturned Capital / Asset Equity)
 
 <p><strong>Note on underwater assets:</strong> The higher threshold (10.7%) reflects contractual mechanics, not a sunk cost anchor. The fund owes LPs pref on the original investment regardless of current value. This is economic reality, not behavioral bias.</p>
 
-<p><strong>Transaction costs adjustment:</strong> Disposition friction (broker commissions, legal fees, typically 2-4% of sale price) effectively raises the economic threshold to 9-10%. For a 2-year expected hold period, 3% transaction costs translate to 1.5% annually (3% ÷ 2 years), raising the effective threshold from 8.0% to 9.5%. This is why the Transaction-Adjusted Threshold in the decision framework ranges from 9-10%.</p>
-
 <h3>Critical Insight: The Threshold is Asset-Specific</h3>
 
 <p>The economic threshold depends only on each asset's Unreturned Capital and Current Equity. Fund age, other assets, and fund position (below pref, in catch-up, past catch-up) don't change the threshold—they change how much GP carry you earn, but not whether the asset creates value.</p>
@@ -172,7 +170,7 @@ Exit if: Forward IRR &lt; 8% × (Unreturned Capital / Asset Equity)
 
 <div class="case-study">
 <h3>Case Study 3: Distressed Office — Emergency Exit</h3>
-<p><strong>Profile:</strong> Urban office, structural headwinds (remote work). Current value: $15M (down from $40M). Unreturned capital: $30M. 60% occupied, -$1M annual cash flow.</p>
+<p><strong>Profile:</strong> Urban office, structural headwinds (remote work). Current equity: $30M (down from $40M original investment). Unreturned capital: $40M. 60% occupied, -$1M annual cash flow.</p>
 <p><strong>Forward IRR:</strong> -16.7% (continued decline + negative cash flow)</p>
 <p><strong>Threshold:</strong> 8% × ($40M / $30M) = <strong>10.7%</strong></p>
 <p>Pref accrues on $40M unreturned—not the depressed $30M value. Annual pref bleed: $3.2M.</p>
@@ -248,7 +246,7 @@ E[Recovery Value] − (Pref Accrual × Time to Recovery) − (Mgmt Opportunity C
 <p><strong>Question 1:</strong> Is Forward IRR &lt; 8% × (Unreturned Capital / Current Equity)?<br>
 If YES → <strong>EXIT</strong>. Asset is destroying economic value.<br>
 If NO → Proceed to Question 2.<br>
-<em>Note: For fresh assets (no distributions), this simplifies to "Is Forward IRR &lt; 8%?"</em></p>
+<em>Note: For fresh assets (no distributions), this simplifies to "Is Forward IRR &lt; 8%?" Transaction costs (2-4%) effectively raise this to 9-10% for practical purposes.</em></p>
 
 <p><strong>Question 2:</strong> Are you raising next fund within 18 months?<br>
 If YES → Check if asset would drag fund below target quartile <em>and</em> represents &gt;10% of fund NAV or &gt;25 bps IRR drag → <strong>EXIT</strong> (IRR preservation).<br>
@@ -295,16 +293,7 @@ Question 4: Pipeline has two value-add deals at 16% projected IRR. Spread = 5% �
 
 <h3>Catch-Up Structure Distortions</h3>
 
-<p>The catch-up structure doesn't change the economic threshold [Forward IRR &gt; 8% × (Unreturned / Equity)], but it creates time-varying GP incentives:</p>
-
-<table>
-    <tr><th>Fund Position</th><th>Marginal GP Capture</th><th>Impact</th></tr>
-    <tr><td>Below Pref</td><td>0%</td><td>Weak hold incentive—GP earns nothing from incremental profit</td></tr>
-    <tr><td>In Catch-Up (50/50)</td><td>50%</td><td><strong>2.5× stronger hold incentive.</strong> May delay exits to maximize catch-up earnings</td></tr>
-    <tr><td>Past Catch-Up</td><td>20%</td><td>Standard promote—reasonably aligned with LP wealth maximization</td></tr>
-</table>
-
-<p><strong>Example distortion:</strong> GP might hold a 9% forward IRR asset (earning $2.25M at 50% capture) rather than exit to redeploy at 14% IRR, because redeploying pushes the fund past catch-up and reduces future capture to 20%. Portfolio managers should ensure exit decisions are driven by economics, not catch-up maximization. This distortion is eliminated in direct 80/20 structures without catch-up.</p>
+<p>As detailed in Key Finding #2, funds with 50/50 catch-up structures create 2.5× higher GP marginal carry during catch-up (50% capture) compared to post-catch-up promote (20%). This systematically biases GPs to hold suboptimal assets while in catch-up phase, potentially delaying economically superior exits. This distortion is eliminated in direct 80/20 structures without catch-up, common in separate accounts.</p>
 
 <!-- ==================== OTHER CONSIDERATIONS ==================== -->
 <h3>Other Strategic Considerations</h3>
