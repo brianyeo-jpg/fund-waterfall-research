@@ -83,7 +83,9 @@
 
         <p><strong>Critical GP Incentive Distortion:</strong> Funds with 50/50 catch-up structures (industry standard) create <strong>2.5× higher GP marginal carry during catch-up</strong> (50% capture vs 20% after catch-up), systematically biasing GPs to hold suboptimal assets while in catch-up phase. This can delay economically superior redeployment opportunities.</p>
 
-        <p><strong>Bottom Line:</strong> The simple "8% rule" is correct in theory but insufficient in practice. Portfolio managers need a comprehensive framework that accounts for opportunity cost, market timing, GP incentive alignment, and long-term firm economics.</p>
+        <p><strong>Underwater Asset Triage:</strong> For assets with <em>negative</em> forward IRR (not just below-pref returns), the decision framework shifts from "hold vs exit" to "cut losses now vs wait for recovery." The pref accrual becomes a quantifiable bleed—$3.2M annually per $40M unreturned capital—creating real economic cost while waiting. The decision rule: <strong>Exit unless E[Recovery Value] - (Pref Bleed × Time) - (Mgmt Cost) > Current Sale Value</strong>. Probability-weighted scenarios typically show that structural declines (-15% forward IRR) and disasters (-25%) should trigger <strong>immediate exits</strong>, even at realized losses, because pref bleed destroys more value than waiting recovers.</p>
+
+        <p><strong>Bottom Line:</strong> The simple "8% rule" is correct in theory but insufficient in practice. Portfolio managers need a comprehensive framework that accounts for opportunity cost, market timing, GP incentive alignment, long-term firm economics—and when to cut losers rather than hope for recovery.</p>
     </div>
 
     <h2>Conclusion</h2>
@@ -134,7 +136,7 @@
                     <td><strong>Early Fund (Years 1-4)</strong><br>No Near-Term Fundraise</td>
                     <td>Alternative Deployment IRR</td>
                     <td>10-15%</td>
-                    <td>Exit if redeployment opportunities significantly exceed asset forward IRR. Optimize for total value creation (MOIC).</td>
+                    <td>Exit if redeployment opportunities significantly exceed asset forward IRR. IRR-driven capital velocity optimization.</td>
                 </tr>
                 <tr>
                     <td><strong>Mid Fund (Years 5-7)</strong><br>Strong Deployment Pipeline</td>
@@ -165,9 +167,10 @@
 
         <p><strong>Practical takeaway for portfolio managers:</strong></p>
 
-        <p>Use the <strong>five-question framework</strong> (detailed below) to rapidly identify which threshold is binding for each asset:</p>
+        <p>Use the <strong>six-question framework</strong> (detailed below) to rapidly identify which threshold is binding for each asset:</p>
 
         <ol>
+            <li><strong>Is Forward IRR negative?</strong> → Evaluate underwater asset triage: E[Recovery] - Pref Bleed - Mgmt Cost vs Current Sale. Exit if structural decline or disaster scenario.</li>
             <li>Is Forward IRR below the economic threshold [8% × (Unreturned / Equity)]? → Exit (destroying value)</li>
             <li>Raising next fund soon & would drag IRR below target quartile? → Exit (IRR preservation)</li>
             <li>Market at peak with cap rate expansion risk? → Exit (market timing)</li>
@@ -175,7 +178,7 @@
             <li>If none apply → Hold (asset clears all thresholds)</li>
         </ol>
 
-        <p><strong>The bottom line:</strong> Early in fund life (during investment period), redeploy capital into higher-returning opportunities when available—this is IRR-driven capital velocity optimization, not MOIC maximization. Mid fund life, balance IRR sensitivity against transaction friction. Late in fund life, protect IRR if fundraising; otherwise (post-investment period, no fundraising pressure), optimize for total dollars returned. In peak markets, exit to avoid downside regardless of fund stage. Only when none of these conditions apply does the economic threshold become the actual decision driver.</p>
+        <p><strong>The bottom line:</strong> For underwater assets with negative forward IRR, shift from "hold vs exit" to quantified triage—pref bleed is a real, measurable economic cost that can exceed recovery value in structural decline scenarios. For positive-return assets: Early in fund life (during investment period), redeploy capital into higher-returning opportunities when available—this is IRR-driven capital velocity optimization, not MOIC maximization. Mid fund life, balance IRR sensitivity against transaction friction. Late in fund life, protect IRR if fundraising; otherwise (post-investment period, no fundraising pressure), optimize for total dollars returned. In peak markets, exit to avoid downside regardless of fund stage. Only when none of these conditions apply does the economic threshold become the actual decision driver.</p>
 
         <p><strong>Special case—Single Investor Separate Accounts:</strong> The framework above applies to commingled funds. For separate accounts (single LP mandates), the economics remain identical (8% pref threshold unchanged), but <strong>IRR Preservation Threshold drops significantly in importance</strong> because there's no multi-LP fundraising pressure or vintage ranking concerns. This creates a critical difference: separate accounts can hold assets with 11-13% forward IRR that commingled funds would exit to protect quartile rankings. The decision framework simplifies to focus on economic fundamentals (pref rate, alternatives, market timing) without the fundraising distortion. See Part II below for full analysis.</p>
 
@@ -388,6 +391,133 @@
         </div>
     </div>
 
+    <h3>Underwater Asset Triage: When To Cut Your Losers</h3>
+
+    <p>The threshold framework above tells you <strong>when to exit assets below the economic threshold</strong>, but it treats all below-threshold assets equivalently. In practice, there's a critical difference between:</p>
+
+    <ul>
+        <li>Asset with <strong>7% forward IRR</strong> — below 8% threshold, but still creating positive returns</li>
+        <li>Asset with <strong>-5% forward IRR</strong> — destroying value but might recover</li>
+        <li>Asset with <strong>-20% forward IRR</strong> — disaster, exit immediately</li>
+    </ul>
+
+    <p><strong>The real question for underwater assets:</strong> When do you take a <strong>realized loss NOW</strong> vs. hold and hope for recovery?</p>
+
+    <h4>The Pref Bleed Problem</h4>
+
+    <p>Underwater assets create asymmetric decision dynamics. Every quarter you hold a losing asset:</p>
+
+    <ul>
+        <li><strong>Pref continues to accrue</strong> on unreturned capital (not current depressed value)</li>
+        <li><strong>Management bandwidth</strong> is consumed that could be deployed elsewhere</li>
+        <li><strong>LP confidence erodes</strong> as unrealized losses persist</li>
+    </ul>
+
+    <p>For the distressed office asset in Case Study 3 ($30M current value, $40M unreturned):</p>
+
+    <div class="formula">
+        <strong>Annual Pref Bleed:</strong> $40M × 8% = <strong>$3.2M</strong><br>
+        <strong>Quarterly Pref Bleed:</strong> <strong>$800K</strong>
+    </div>
+
+    <p>This pref accrual is a <strong>real economic cost</strong> that compounds daily, making the "hold and hope" strategy increasingly expensive.</p>
+
+    <h4>Decision Framework: Hold vs. Cut Losses</h4>
+
+    <p><strong>Hold underwater asset only if:</strong></p>
+
+    <div class="formula">
+        E[Recovery Value] - (Pref Accrual × Time to Recovery) - (Mgmt Opportunity Cost) > Current Sale Value
+    </div>
+
+    <h4>Decision Matrix for Negative Forward IRR Assets</h4>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Scenario</th>
+                <th>Forward IRR</th>
+                <th>Recovery Probability</th>
+                <th>Decision</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Temporary Distress</strong><br>Market dislocation, fixable issues</td>
+                <td>-5%</td>
+                <td>60% recovery to 8%+ within 18 months</td>
+                <td>Evaluate: pref cost vs expected recovery value</td>
+            </tr>
+            <tr>
+                <td><strong>Structural Decline</strong><br>Secular headwinds, limited recovery path</td>
+                <td>-15%</td>
+                <td>20% stabilization, 80% further decline</td>
+                <td><strong>EXIT NOW</strong> — Stop the pref bleed</td>
+            </tr>
+            <tr>
+                <td><strong>Disaster</strong><br>Fundamental business model broken</td>
+                <td>-25%</td>
+                <td><10% recovery probability</td>
+                <td><strong>EXIT IMMEDIATELY</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Worked Example: Should You Hold This Loser?</h4>
+
+    <div class="case-study">
+        <p><strong>Multifamily Repositioning — Missed Lease-Up (Genuinely Ambiguous Case)</strong></p>
+
+        <p><strong>Current situation:</strong></p>
+        <ul>
+            <li>Acquired 18 months ago for $45M equity, repositioned with $5M capex</li>
+            <li>Current value: <strong>$48M</strong> (85% occupancy, underperforming lease-up)</li>
+            <li>Unreturned capital: <strong>$50M</strong> (original $45M + $5M capex, no distributions)</li>
+            <li>Current forward IRR: <strong>+1%</strong> (slightly positive but below threshold)</li>
+            <li>Pref accrual: <strong>$4.0M annually</strong> ($50M × 8%)</li>
+        </ul>
+
+        <p><strong>Recovery scenarios (18-month horizon):</strong></p>
+        <ul>
+            <li><strong>Optimistic (40%):</strong> Lease-up completes to 95%, stabilized value $58M → +14% IRR</li>
+            <li><strong>Base case (35%):</strong> Slow lease-up to 90%, value $52M → +5% IRR</li>
+            <li><strong>Pessimistic (25%):</strong> Competitive supply pressure, drops to 80% occupancy, value $44M → -6% IRR</li>
+        </ul>
+
+        <p><strong>Probability-weighted expected value:</strong></p>
+        <div class="formula">
+            E[V] = 40% × $58M + 35% × $52M + 25% × $44M = <strong>$52.4M</strong> (in 18 months)<br>
+            <br>
+            Less: Pref accrual = $4.0M × 1.5 = <strong>$6.0M</strong><br>
+            Less: Mgmt opportunity cost = <strong>$0.5M</strong> (18 months of active leasing)<br>
+            <br>
+            <strong>Net expected value = $45.9M</strong><br>
+            <br>
+            vs. Sell today = <strong>$48M</strong><br>
+            <br>
+            <strong>Value destroyed by waiting: $2.1M</strong>
+        </div>
+
+        <p style="background: #ffe6e6; padding: 10px; border-left: 3px solid #ff4444;">
+            <strong>DECISION: EXIT NOW.</strong> This is the genuinely ambiguous case where the pref bleed framework provides the tiebreaker. The asset has credible recovery optionality (40% probability of strong lease-up), but the pref accrual ($6.0M over 18 months) exceeds the expected value gain ($4.4M). Without the pref bleed calculation, this might look like a "hold and wait for stabilization" situation. With it, the economically correct decision is to take the small realized loss today ($2M) rather than gamble on recovery while bleeding $4M annually in pref.
+        </p>
+    </div>
+
+    <div class="warning">
+        <p><strong>Critical interaction with Question 0 (Debt Maturity):</strong> Underwater assets frequently have approaching debt maturities, covenant violations, or negative cash flow that makes refinancing impossible. In many cases, the triage framework is moot because Question 0 already forces the exit. Before running probability-weighted recovery scenarios, confirm the asset can actually be held — if debt is maturing within 12 months and refinancing is unavailable, the exit is structurally mandatory regardless of pref bleed analysis.</p>
+    </div>
+
+    <div class="warning">
+        <p><strong>Why GPs hold losers too long:</strong></p>
+        <ul>
+            <li><strong>Realized losses trigger IC scrutiny</strong> — "What went wrong?" conversations are career-damaging</li>
+            <li><strong>Unrealized losses stay "in play"</strong> — Track record presentations show only realized returns, creating false optionality</li>
+            <li><strong>Pref accrual is a real cash cost that compounds daily</strong> — $4M annual bleed = $1M per quarter, making delay increasingly expensive</li>
+        </ul>
+
+        <p><strong>The framework's value:</strong> Quantifying the pref bleed ($4M annually, $1M quarterly) makes the cost of holding explicit and harder to rationalize in IC discussions. The behavioral bias doesn't change, but the economic cost becomes undeniable.</p>
+    </div>
+
     <h2>Quick Reference: Practical Decision Tools</h2>
 
     <h3>Five-Question Exit Framework</h3>
@@ -475,7 +605,7 @@
                 <td><strong>Early Fund (Years 1-4)</strong><br>No Near-Term Fundraise</td>
                 <td>Alternative Deployment IRR</td>
                 <td>10-15%</td>
-                <td>Exit if redeployment opportunities significantly exceed asset forward IRR. Optimize for total value creation (MOIC).</td>
+                <td>Exit if redeployment opportunities significantly exceed asset forward IRR. IRR-driven capital velocity optimization.</td>
             </tr>
             <tr>
                 <td><strong>Mid Fund (Years 5-7)</strong><br>Strong Deployment Pipeline</td>
@@ -623,9 +753,9 @@
         </li>
         <li><strong>Fund lifecycle stage:</strong>
             <ul>
-                <li>Early fund (Years 1-4): Prioritize MOIC—time to deploy and build returns</li>
-                <li>Mid fund (Years 5-7): Balance IRR and MOIC—IRR becoming sensitive</li>
-                <li>Late fund (Years 8-10): IRR optimization dominates—timing critical for vintage benchmarks</li>
+                <li>Early fund (Years 1-4): IRR-driven capital velocity—redeploy into higher-returning opportunities when available (Alternative Deployment IRR threshold)</li>
+                <li>Mid fund (Years 5-7): Balance IRR sensitivity against transaction friction</li>
+                <li>Late fund (Years 8-10): IRR Preservation dominates if fundraising; otherwise optimize for total dollars returned</li>
             </ul>
         </li>
         <li><strong>Fundraising horizon:</strong>
